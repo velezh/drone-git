@@ -13,8 +13,7 @@ listen-address=127.0.0.1
 strict-order
 no-resolv
 no-poll
-server=IP_address_1
-server=IP_address_2
+server=10.8.0.1
 EOF
 
 rc-update add dnsmasq default
