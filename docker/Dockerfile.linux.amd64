@@ -1,7 +1,24 @@
 FROM alpine:3.12
-RUN apk add --no-cache ca-certificates git git-lfs openssh curl perl aws-cli sudo
+RUN apk add --no-cache ca-certificates git git-lfs openssh curl perl aws-cli sudo dnsmasq
 
 ADD posix/* /usr/local/bin/
+
+cat > /etc/resolv.conf << EOF
+127.0.0.1
+EOF
+
+cat >> /etc/dnsmasq.conf << EOF
+port=53
+listen-address=127.0.0.1
+strict-order
+no-resolv
+no-poll
+server=IP_address_1
+server=IP_address_2
+EOF
+
+rc-update add dnsmasq default
+rc-service dnsmasq start
 
 # RUN adduser -g Drone -s /bin/sh -D -u 1000 drone
 # RUN echo 'drone ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/drone
